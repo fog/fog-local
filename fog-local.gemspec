@@ -6,12 +6,13 @@ require 'fog/local/version'
 Gem::Specification.new do |spec|
   spec.name          = "fog-local"
   spec.version       = Fog::Local::VERSION
-  spec.authors       = ["Ville Lautanala"]
-  spec.email         = ["lautis@gmail.com"]
+  spec.authors       = ["Wesley Beary", "Ville Lautanala"]
+  spec.email         = ["geemus@gmail.com", "lautis@gmail.com"]
 
-  spec.summary       = %q{Extracted local filesystem storage module from fog.}
-  spec.description   = %q{Extracted local filesystem storage module from fog.}
-  spec.homepage      = "https://github.com/lautis/fog-local"
+  spec.summary       = %q{Module for the 'fog' gem to support local filesystem storage.}
+  spec.description   = %q{This library can be used as a module for `fog` or as standalone provider
+                       to use local filesystem storage.}
+  spec.homepage      = "https://github.com/fog/fog-local"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
