@@ -8,6 +8,7 @@ end
 require File.expand_path('../../lib/fog/local', __FILE__)
 
 Bundler.require(:test)
+require 'tmpdir'
 
 Excon.defaults.merge!(:debug_request => true, :debug_response => true)
 
