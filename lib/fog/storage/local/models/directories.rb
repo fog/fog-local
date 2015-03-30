@@ -1,6 +1,3 @@
-require 'fog/core/collection'
-require 'fog/local/models/storage/directory'
-
 module Fog
   module Storage
     class Local
