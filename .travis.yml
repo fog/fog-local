@@ -7,3 +7,6 @@ rvm:
   - 2.1.5
   - 2.2.0
   - jruby-19mode
+env:
+  - FOG_MOCK=true
+  - FOG_MOCK=false

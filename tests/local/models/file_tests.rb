@@ -3,7 +3,11 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
   pending if Fog.mocking?
 
   before do
-    @options = { :local_root => '~/.fog' }
+    @options = { :local_root => Dir.mktmpdir('fog-tests') }
+  end
+
+  after do
+    FileUtils.remove_entry_secure @options[:local_root]
   end
 
   tests('#public_url') do
