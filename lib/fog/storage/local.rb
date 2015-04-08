@@ -1,12 +1,15 @@
-require 'fog/local/core'
-
 module Fog
   module Storage
     class Local < Fog::Service
+      autoload :Directories, ::File.expand_path('../local/models/directories', __FILE__)
+      autoload :Directory, ::File.expand_path('../local/models/directory', __FILE__)
+      autoload :File, ::File.expand_path('../local/models/file', __FILE__)
+      autoload :Files, ::File.expand_path('../local/models/files', __FILE__)
+
       requires :local_root
       recognizes :endpoint, :scheme, :host, :port, :path
 
-      model_path 'fog/local/models/storage'
+      model_path 'fog/storage/local/models'
       collection  :directories
       model       :directory
       model       :file
@@ -77,7 +80,6 @@ module Fog
         end
 
         def copy_object(source_directory_name, source_object_name, target_directory_name, target_object_name, options={})
-          require 'fileutils'
           source_path = path_to(::File.join(source_directory_name, source_object_name))
           target_path = path_to(::File.join(target_directory_name, target_object_name))
           ::FileUtils.mkdir_p(::File.dirname(target_path))
