@@ -85,19 +85,15 @@ module Fog
 
         def save(options = {})
           requires :body, :directory, :key
+
+          # Once 1.9.3 support is dropped, the following two lines
+          # can be replaced with `File.dirname(path)`
           dirs = path.split(::File::SEPARATOR)[0...-1]
-          dirs.length.times do |index|
-            dir_path = dirs[0..index].join(::File::SEPARATOR)
-            if dir_path.empty? # path starts with ::File::SEPARATOR
-              next
-            end
-            # create directory if it doesn't already exist
-            begin
-              Dir.mkdir(dir_path)
-            rescue Errno::EEXIST
-              raise unless ::File.directory?(dir_path)
-            end
-          end
+          dir_path = dirs.join(::File::SEPARATOR)
+
+          # Create all directories in file path that do not yet exist
+          FileUtils.mkdir_p(dir_path)
+
           file = ::File.new(path, 'wb')
           if body.is_a?(String)
             file.write(body)
