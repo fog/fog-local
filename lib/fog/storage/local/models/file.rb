@@ -94,7 +94,7 @@ module Fog
           # Create all directories in file path that do not yet exist
           FileUtils.mkdir_p(dir_path)
 
-          if body.kind_of? ::File and ::File.exist?(body.path)
+          if (body.is_a?(::File) || body.is_a?(Tempfile)) && ::File.exist?(body.path)
             FileUtils.cp(body.path, path)
           else
             write_file(path, body)
