@@ -98,15 +98,12 @@ module Fog
               raise unless ::File.directory?(dir_path)
             end
           end
-          file = ::File.new(path, 'wb')
-          if body.is_a?(String)
-            file.write(body)
-          elsif body.kind_of? ::File and ::File.exist?(body.path)
+          if body.kind_of? ::File and ::File.exist?(body.path)
             FileUtils.cp(body.path, path)
           else
-            file.write(body.read)
+            write_file(path, body)
           end
-          file.close
+
           merge_attributes(
             :content_length => Fog::Storage.get_body_size(body),
             :last_modified  => ::File.mtime(path)
@@ -122,6 +119,15 @@ module Fog
 
         def path
           service.path_to(::File.join(directory.key, key))
+        end
+
+        def write_file(path, content)
+          input_io = StringIO.new(content) if content.is_a?(String)
+          input_io ||= content
+
+          ::File.open(path, 'wb') do |file|
+            IO.copy_stream(input_io, file)
+          end
         end
       end
     end
