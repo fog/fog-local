@@ -37,15 +37,16 @@ module Fog
               :key            => key,
               :last_modified  => ::File.mtime(path)
             }
-            if block_given?
-              file = ::File.open(path)
-              while (chunk = file.read(Excon::CHUNK_SIZE)) && yield(chunk); end
-              file.close
-              new(data)
-            else
-              body = ::File.read(path)
-              new(data.merge!(:body => body))
+
+            body = ""
+            ::File.open(path) do |file|
+              while (chunk = file.read(Excon::CHUNK_SIZE)) && (!block_given? || (block_given? && yield(chunk)))
+                body << chunk
+              end
             end
+            data.merge!(:body => body) if !block_given?
+
+            new(data)
           else
             nil
           end
