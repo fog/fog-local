@@ -44,4 +44,16 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
         file.public_url
       end
   end
+
+  tests('#save') do
+    tests('creates non-existent subdirs') do
+      returns(true) do
+        connection = Fog::Storage::Local.new(@options)
+        directory = connection.directories.new(:key => 'path1')
+        file = directory.files.new(:key => 'path2/file.rb', :body => "my contents")
+        file.save
+        File.exists?(@options[:local_root] + "/path1/path2/file.rb")
+      end
+    end
+  end
 end
