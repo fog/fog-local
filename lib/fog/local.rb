@@ -1,5 +1,6 @@
 require 'fog/core'
 require 'fileutils'
+require 'tempfile'
 require File.expand_path('../local/version', __FILE__)
 
 module Fog

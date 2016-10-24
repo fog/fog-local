@@ -55,5 +55,25 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
         File.exists?(@options[:local_root] + "/path1/path2/file.rb")
       end
     end
+
+    tests('with tempfile').returns('tempfile') do
+      connection = Fog::Storage::Local.new(@options)
+      directory = connection.directories.create(:key => 'directory')
+
+      tempfile = Tempfile.new(['file', '.txt'])
+      tempfile.write('tempfile')
+      tempfile.rewind
+
+      tempfile.instance_eval do
+        def read
+          raise 'must not be read'
+        end
+      end
+      file = directory.files.new(:key => 'tempfile.txt', :body => tempfile)
+      file.save
+      tempfile.close
+      tempfile.unlink
+      directory.files.get('tempfile.txt').body
+    end
   end
 end
