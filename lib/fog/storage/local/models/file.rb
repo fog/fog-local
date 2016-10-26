@@ -94,15 +94,11 @@ module Fog
           # Create all directories in file path that do not yet exist
           FileUtils.mkdir_p(dir_path)
 
-          if (body.is_a?(::File) || body.is_a?(Tempfile)) && ::File.exist?(body.path)
-            FileUtils.cp(body.path, path)
-          else
-            write_file(path, body)
-          end
+          stat = write_file(path, body)
 
           merge_attributes(
-            :content_length => Fog::Storage.get_body_size(body),
-            :last_modified  => ::File.mtime(path)
+            :content_length => stat.size,
+            :last_modified  => stat.mtime
           )
           true
         end
@@ -117,13 +113,45 @@ module Fog
           service.path_to(::File.join(directory.key, key))
         end
 
+        # rubocop:disable HandleExceptions
         def write_file(path, content)
-          input_io = StringIO.new(content) if content.is_a?(String)
-          input_io ||= content
+          tmp_path = "#{path}.tmp.#{Process.pid}.#{Time.now.to_f}"
+          size = Fog::Storage.get_body_size(content)
 
-          ::File.open(path, 'wb') do |file|
-            IO.copy_stream(input_io, file)
+          stat = body_to_file(tmp_path, content)
+
+          ::File.rename(tmp_path, path) if stat.size == size && size.nonzero?
+
+          return stat
+        ensure
+          begin
+            ::File.unlink(tmp_path)
+          rescue
           end
+        end
+
+        def body_to_file(path, content)
+          ::File.open(path, 'wb') do |file|
+            check_bytes_match(content, if content.respond_to?(:read)
+                                         IO.copy_stream(content, file)
+                                       else
+                                         file.write(content)
+                                       end)
+            flush_data(file)
+          end
+
+          ::File.lstat(path)
+        end
+
+        def check_bytes_match(content, written)
+          if written != Fog::Storage.get_body_size(content)
+            raise Errno::EIO, "Write to #{path} failed"
+          end
+        end
+
+        def flush_data(fd)
+          fd.fdatasync
+        rescue
         end
       end
     end
