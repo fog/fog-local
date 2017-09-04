@@ -18,11 +18,12 @@ module Fog
         end
 
         def get(key, options = {})
-          if ::File.directory?(service.path_to(key))
-            new(:key => key)
-          else
-            nil
-          end
+          create_directory(key, options) if ::File.directory?(service.path_to(key))
+        end
+
+        private
+        def create_directory(key, options)
+          options[:path] ? new(key: key + options[:path]) : new(key: key)
         end
       end
     end
