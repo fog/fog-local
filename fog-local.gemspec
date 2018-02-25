@@ -23,5 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'shindo',  '~> 0.3'
 
-  spec.add_dependency 'fog-core',  '~> 1.27'
+  spec.add_dependency 'fog-core',  '>= 1.27', '< 3.0'
 end
