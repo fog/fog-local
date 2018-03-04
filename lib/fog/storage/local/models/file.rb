@@ -60,13 +60,12 @@ module Fog
         end
 
         def rm_if_empty_dir(dir_path)
-          pwd = Dir.pwd
           if ::File.directory?(dir_path)
-            Dir.chdir(dir_path)
-            if Dir.glob('*').empty?
-              Dir.rmdir(dir_path)
-            end
-            Dir.chdir(pwd)
+            # NOTE: There’s Dir.empty?, but it is only available on Ruby 2.4+
+            entries = Dir.entries(dir_path)
+            is_empty = entries.empty? || entries.all? { |e| ['.', '..'].include?(e) }
+
+            Dir.rmdir(dir_path) if is_empty
           end
         end
 
