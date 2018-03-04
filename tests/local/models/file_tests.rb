@@ -76,4 +76,71 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
       directory.files.get('tempfile.txt').body
     end
   end
+
+  tests('#destroy') do
+    # - removes dir if it contains no files
+    # - keeps dir if it contains non-hidden files
+    # - keeps dir if it contains hidden files
+    # - stays in the same directory
+
+    tests('removes enclosing dir if it is empty') do
+      returns(false) do
+        connection = Fog::Storage::Local.new(@options)
+        directory = connection.directories.new(:key => 'path1')
+
+        file = directory.files.new(:key => 'path2/file.rb', :body => "my contents")
+        file.save
+        file.destroy
+
+        File.exists?(@options[:local_root] + "/path1/path2")
+      end
+    end
+
+    tests('keeps enclosing dir if it is not empty') do
+      returns(true) do
+        connection = Fog::Storage::Local.new(@options)
+        directory = connection.directories.new(:key => 'path1')
+
+        file = directory.files.new(:key => 'path2/file.rb', :body => "my contents")
+        file.save
+
+        file = directory.files.new(:key => 'path2/file2.rb', :body => "my contents")
+        file.save
+        file.destroy
+
+        File.exists?(@options[:local_root] + "/path1/path2")
+      end
+    end
+
+    # FIXME: the following test fails
+
+    # tests('keeps enclosing dir if contains only hidden files') do
+    #   returns(true) do
+    #     connection = Fog::Storage::Local.new(@options)
+    #     directory = connection.directories.new(:key => 'path1')
+    #
+    #     file = directory.files.new(:key => 'path2/.file.rb', :body => "my contents")
+    #     file.save
+    #
+    #     file = directory.files.new(:key => 'path2/.file2.rb', :body => "my contents")
+    #     file.save
+    #     file.destroy
+    #
+    #     File.exists?(@options[:local_root] + "/path1/path2")
+    #   end
+    # end
+
+    tests('it stays in the same directory') do
+      returns(Dir.pwd) do
+        connection = Fog::Storage::Local.new(@options)
+        directory = connection.directories.new(:key => 'path1')
+
+        file = directory.files.new(:key => 'path2/file2.rb', :body => "my contents")
+        file.save
+        file.destroy
+
+        Dir.pwd
+      end
+    end
+  end
 end
