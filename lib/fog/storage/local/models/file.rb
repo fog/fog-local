@@ -61,12 +61,18 @@ module Fog
 
         def rm_if_empty_dir(dir_path)
           if ::File.directory?(dir_path)
-            # NOTE: There’s Dir.empty?, but it is only available on Ruby 2.4+
-            entries = Dir.entries(dir_path)
-            is_empty = entries.empty? || entries.all? { |e| ['.', '..'].include?(e) }
-
-            Dir.rmdir(dir_path) if is_empty
+            Dir.rmdir(dir_path) if dir_empty?(dir_path)
           end
+        end
+
+        def dir_empty?(dir_path)
+          # NOTE: There’s Dir.empty?, but it is only available on Ruby 2.4+
+
+          # NOTE: `entries` will be empty on Windows, and contain . and .. on
+          # unix-like systems (macOS, Linux, BSD, …)
+
+          entries = Dir.entries(dir_path)
+          entries.empty? || entries.all? { |e| ['.', '..'].include?(e) }
         end
 
         def public=(new_public)
