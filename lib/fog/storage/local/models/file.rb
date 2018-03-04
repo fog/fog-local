@@ -54,16 +54,20 @@ module Fog
             if dir_path == service.path_to(directory.key)
               break
             end
-            pwd = Dir.pwd
-            if ::File.directory?(dir_path)
-              Dir.chdir(dir_path)
-              if Dir.glob('*').empty?
-                Dir.rmdir(dir_path)
-              end
-              Dir.chdir(pwd)
-            end
+            rm_if_empty_dir(dir_path)
           end
           true
+        end
+
+        def rm_if_empty_dir(dir_path)
+          pwd = Dir.pwd
+          if ::File.directory?(dir_path)
+            Dir.chdir(dir_path)
+            if Dir.glob('*').empty?
+              Dir.rmdir(dir_path)
+            end
+            Dir.chdir(pwd)
+          end
         end
 
         def public=(new_public)
