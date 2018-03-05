@@ -54,14 +54,7 @@ module Fog
             if dir_path == service.path_to(directory.key)
               break
             end
-            pwd = Dir.pwd
-            if ::File.directory?(dir_path)
-              Dir.chdir(dir_path)
-              if Dir.glob('*').empty?
-                Dir.rmdir(dir_path)
-              end
-              Dir.chdir(pwd)
-            end
+            rm_if_empty_dir(dir_path)
           end
           true
         end
@@ -124,6 +117,22 @@ module Fog
           ::File.open(path, 'wb') do |file|
             IO.copy_stream(input_io, file)
           end
+        end
+
+        def rm_if_empty_dir(dir_path)
+          if ::File.directory?(dir_path)
+            Dir.rmdir(dir_path) if dir_empty?(dir_path)
+          end
+        end
+
+        def dir_empty?(dir_path)
+          # NOTE: There’s Dir.empty?, but it is only available on Ruby 2.4+
+
+          # NOTE: `entries` will be empty on Windows, and contain . and .. on
+          # unix-like systems (macOS, Linux, BSD, …)
+
+          entries = Dir.entries(dir_path)
+          entries.empty? || entries.all? { |e| ['.', '..'].include?(e) }
         end
       end
     end
