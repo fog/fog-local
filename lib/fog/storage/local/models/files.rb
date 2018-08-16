@@ -71,6 +71,10 @@ module Fog
           super({ :directory => directory }.merge!(attributes))
         end
 
+        def is_truncated
+          false
+        end
+
         private
 
         def file_path(key)
