@@ -3,12 +3,12 @@ require 'fileutils'
 require 'tempfile'
 
 require 'fog/local/version'
-require 'fog/local/storage'
 
 module Fog
   module Local
     extend Provider
 
+    autoload :Storage, 'fog/local/storage'
     service :storage, :Storage
   end
 end
