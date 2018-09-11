@@ -3,7 +3,7 @@ class Local < Fog::Bin
     def class_for(key)
       case key
       when :storage
-        Fog::Storage::Local
+        Fog::Local::Storage
       else
         raise ArgumentError, "Unsupported #{self} service: #{key}"
       end
@@ -14,7 +14,7 @@ class Local < Fog::Bin
         hash[key] = case key
         when :storage
           Fog::Logger.warning("Local[:storage] is not recommended, use Storage[:local] for portability")
-          Fog::Storage.new(:provider => 'Local')
+          Fog::Local::Storage.new
         else
           raise ArgumentError, "Unrecognized service: #{key.inspect}"
         end

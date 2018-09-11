@@ -12,7 +12,7 @@ Shindo.tests('Storage[:local] | directory', ["local"]) do
 
   tests('save') do
     returns('directory') do
-      connection = Fog::Storage::Local.new(@options)
+      connection = Fog::Local::Storage.new(@options)
       connection.directories.create(:key => 'directory')
       connection.directories.create(:key => 'directory').key
     end

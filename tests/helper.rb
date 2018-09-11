@@ -5,7 +5,8 @@ rescue LoadError => e
   $stderr.puts "not recording test coverage: #{e.inspect}"
 end
 
-require File.expand_path('../../lib/fog/local', __FILE__)
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'fog/local'
 
 Bundler.require(:test)
 require 'tmpdir'

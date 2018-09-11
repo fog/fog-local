@@ -3,7 +3,7 @@ Shindo.tests('Storage[:local] | directories', ["local"]) do
   pending if Fog.mocking?
 
   @options = { :local_root => Dir.mktmpdir('fog-tests') }
-  @collection = Fog::Storage::Local.new(@options).directories
+  @collection = Fog::Local::Storage.new(@options).directories
 
   collection_tests(@collection, {:key => "fogdirtests"}, true)
 

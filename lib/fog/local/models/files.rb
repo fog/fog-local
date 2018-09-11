@@ -1,10 +1,10 @@
 module Fog
-  module Storage
-    class Local
+  module Local
+    class Storage
       class Files < Fog::Collection
         attribute :directory
 
-        model Fog::Storage::Local::File
+        model File
 
         def all
           requires :directory

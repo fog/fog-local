@@ -1,6 +1,6 @@
 module Fog
-  module Storage
-    class Local
+  module Local
+    class Storage
       class File < Fog::Model
         identity  :key,             :aliases => 'Key'
 

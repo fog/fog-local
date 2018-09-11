@@ -13,7 +13,7 @@ Shindo.tests('Local | storage') do
   tests('#endpoint') do
     tests('when no endpoint is provided').
       returns(nil) do
-        Fog::Storage::Local.new(@options).endpoint
+        Fog::Local::Storage.new(@options).endpoint
       end
 
     tests('when no host is provided').
@@ -22,14 +22,14 @@ Shindo.tests('Local | storage') do
         @options[:path] = '/files'
         @options[:port] = 80
 
-        Fog::Storage::Local.new(@options).endpoint
+        Fog::Local::Storage.new(@options).endpoint
       end
 
     tests('when endpoint is provided').
       returns('http://example.com/files') do
         @options[:endpoint] = 'http://example.com/files'
 
-        Fog::Storage::Local.new(@options).endpoint
+        Fog::Local::Storage.new(@options).endpoint
       end
 
     tests('when at least host option is provided').
@@ -38,7 +38,7 @@ Shindo.tests('Local | storage') do
         @options[:host] = 'example.com'
         @options[:path] = '/files'
 
-        Fog::Storage::Local.new(@options).endpoint
+        Fog::Local::Storage.new(@options).endpoint
       end
   end
 end
