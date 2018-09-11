@@ -1,8 +1,8 @@
 module Fog
-  module Storage
-    class Local
+  module Local
+    class Storage
       class Directories < Fog::Collection
-        model Fog::Storage::Local::Directory
+        model Directory
 
         def all
           data = if ::File.directory?(service.local_root)
@@ -22,6 +22,7 @@ module Fog
         end
 
         private
+
         def create_directory(key, options)
           options[:path] ? new(key: key + options[:path]) : new(key: key)
         end

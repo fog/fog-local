@@ -1,6 +1,6 @@
 module Fog
-  module Storage
-    class Local
+  module Local
+    class Storage
       class Directory < Fog::Model
         identity  :key
 
@@ -16,12 +16,7 @@ module Fog
         end
 
         def files
-          @files ||= begin
-            Fog::Storage::Local::Files.new(
-              :directory    => self,
-              :service   => service
-            )
-          end
+          @files ||= Files.new(directory: self, service: service)
         end
 
         def public=(new_public)

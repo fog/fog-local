@@ -1,16 +1,16 @@
 require 'fog/core'
 require 'fileutils'
 require 'tempfile'
-require File.expand_path('../local/version', __FILE__)
+
+require 'fog/local/version'
 
 module Fog
-  module Storage
-    autoload :Local, File.expand_path('../storage/local', __FILE__)
-  end
-
   module Local
-    extend Fog::Provider
+    extend Provider
 
-    service(:storage, 'Storage')
+    autoload :Storage, 'fog/local/storage'
+    service :storage, :Storage
   end
 end
+
+Fog::Storage::Local = Fog::Local::Storage # legacy compat

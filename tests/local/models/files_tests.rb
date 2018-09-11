@@ -12,11 +12,10 @@ Shindo.tests('Storage[:local] | files', ["local"]) do
 
   tests("#is_truncated") do
     returns(false) do
-      connection = Fog::Storage::Local.new(@options)
+      connection = Fog::Local::Storage.new(@options)
       directory = connection.directories.create(:key => 'directory')
       collection = directory.files
       collection.is_truncated
     end
   end
-
 end

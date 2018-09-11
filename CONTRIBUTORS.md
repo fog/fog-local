@@ -16,3 +16,4 @@
 * James Herdman <james.herdman@me.com>
 * Adam Tanner <adam@adamtanner.org>
 * Mark Yen <marky@activestate.com>
+* Kevin Deisz <kevin.deisz@gmail.com>

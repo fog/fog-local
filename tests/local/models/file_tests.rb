@@ -15,7 +15,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
       returns('http://example.com/files/directory/file.txt') do
         @options[:endpoint] = 'http://example.com/files'
 
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'directory')
         file = directory.files.new(:key => 'file.txt')
 
@@ -26,7 +26,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
       returns(nil) do
         @options[:endpoint] = nil
 
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'directory')
         file = directory.files.new(:key => 'file.txt')
 
@@ -37,7 +37,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
       returns('http://example.com/files/my%20directory/my%20file.txt') do
         @options[:endpoint] = 'http://example.com/files'
 
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'my directory')
         file = directory.files.new(:key => 'my file.txt')
 
@@ -48,7 +48,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
   tests('#save') do
     tests('creates non-existent subdirs') do
       returns(true) do
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'path1')
         file = directory.files.new(:key => 'path2/file.rb', :body => "my contents")
         file.save
@@ -57,7 +57,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
     end
 
     tests('with tempfile').returns('tempfile') do
-      connection = Fog::Storage::Local.new(@options)
+      connection = Fog::Local::Storage.new(@options)
       directory = connection.directories.create(:key => 'directory')
 
       tempfile = Tempfile.new(['file', '.txt'])
@@ -85,7 +85,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
 
     tests('removes enclosing dir if it is empty') do
       returns(false) do
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'path1')
 
         file = directory.files.new(:key => 'path2/file.rb', :body => "my contents")
@@ -98,7 +98,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
 
     tests('keeps enclosing dir if it is not empty') do
       returns(true) do
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'path1')
 
         file = directory.files.new(:key => 'path2/file.rb', :body => "my contents")
@@ -114,7 +114,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
 
     tests('keeps enclosing dir if contains only hidden files') do
       returns(true) do
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'path1')
 
         file = directory.files.new(:key => 'path2/.file.rb', :body => "my contents")
@@ -130,7 +130,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
 
     tests('it stays in the same directory') do
       returns(Dir.pwd) do
-        connection = Fog::Storage::Local.new(@options)
+        connection = Fog::Local::Storage.new(@options)
         directory = connection.directories.new(:key => 'path1')
 
         file = directory.files.new(:key => 'path2/file2.rb', :body => "my contents")
