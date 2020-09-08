@@ -67,8 +67,8 @@ module Fog
           requires :directory, :key
 
           if service.endpoint
-            escaped_directory = URI.escape(directory.key)
-            escaped_key = URI.escape(key)
+            escaped_directory = ERB::Util.url_encode(directory.key)
+            escaped_key = ERB::Util.url_encode(key)
 
             ::File.join(service.endpoint, escaped_directory, escaped_key)
           else

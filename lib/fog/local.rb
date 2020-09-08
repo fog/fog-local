@@ -1,4 +1,5 @@
 require 'fog/core'
+require 'erb'
 require 'fileutils'
 require 'tempfile'
 
