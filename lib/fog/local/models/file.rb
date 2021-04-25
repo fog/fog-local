@@ -67,8 +67,8 @@ module Fog
           requires :directory, :key
 
           if service.endpoint
-            escaped_directory = URI.escape(directory.key)
-            escaped_key = URI.escape(key)
+            escaped_directory = uri_escape(directory.key)
+            escaped_key = uri_escape(key)
 
             ::File.join(service.endpoint, escaped_directory, escaped_key)
           else
@@ -104,6 +104,12 @@ module Fog
 
         def directory=(new_directory)
           @directory = new_directory
+        end
+
+        def uri_escape(string)
+          string.b.gsub(/([^a-zA-Z0-9_.\-~]+)/) do |m|
+            '%' + m.unpack('H2' * m.bytesize).join('%').upcase
+          end
         end
 
         def path
