@@ -107,7 +107,7 @@ module Fog
         end
 
         def uri_escape(string)
-          string.b.gsub(/([^a-zA-Z0-9_.\-~]+)/) do |m|
+          string.b.gsub(URI::DEFAULT_PARSER.regexp[:UNSAFE]) do |m|
             '%' + m.unpack('H2' * m.bytesize).join('%').upcase
           end
         end
