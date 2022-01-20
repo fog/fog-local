@@ -43,6 +43,17 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
 
         file.public_url
       end
+
+    tests('when key has safe characters').
+      returns('http://example.com/files/my/directory/my/file.txt') do
+        @options[:endpoint] = 'http://example.com/files'
+
+        connection = Fog::Local::Storage.new(@options)
+        directory = connection.directories.new(:key => 'my/directory')
+        file = directory.files.new(:key => 'my/file.txt')
+
+        file.public_url
+      end
   end
 
   tests('#save') do
