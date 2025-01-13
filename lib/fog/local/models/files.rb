@@ -38,7 +38,7 @@ module Fog
               :last_modified  => ::File.mtime(path)
             }
 
-            body = ""
+            body = String.new
             ::File.open(path) do |file|
               while (chunk = file.read(Excon::CHUNK_SIZE)) && (!block_given? || (block_given? && yield(chunk)))
                 body << chunk
