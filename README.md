@@ -28,7 +28,7 @@ Initialise a `Fog::Local::Storage` object:
 storage = Fog::Local::Storage.new(local_root: '~/fog')
 ```
 
-This can then be used like any other [Fog storage](http://fog.io/storage/).
+This can then be used like any other [Fog storage](https://fog.github.io/storage/).
 
 ```ruby
 directory = storage.directories.create(key: 'data')
