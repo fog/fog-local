@@ -63,7 +63,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
         directory = connection.directories.new(:key => 'path1')
         file = directory.files.new(:key => 'path2/file.rb', :body => "my contents")
         file.save
-        File.exists?(@options[:local_root] + "/path1/path2/file.rb")
+        File.exist?(@options[:local_root] + "/path1/path2/file.rb")
       end
     end
 
@@ -103,7 +103,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
         file.save
         file.destroy
 
-        File.exists?(@options[:local_root] + "/path1/path2")
+        File.exist?(@options[:local_root] + "/path1/path2")
       end
     end
 
@@ -119,7 +119,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
         file.save
         file.destroy
 
-        File.exists?(@options[:local_root] + "/path1/path2")
+        File.exist?(@options[:local_root] + "/path1/path2")
       end
     end
 
@@ -135,7 +135,7 @@ Shindo.tests('Storage[:local] | file', ["local"]) do
         file.save
         file.destroy
 
-        File.exists?(@options[:local_root] + "/path1/path2")
+        File.exist?(@options[:local_root] + "/path1/path2")
       end
     end
 
