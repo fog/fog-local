@@ -1,8 +1,7 @@
 # Fog::Local
 
 ![Gem Version](https://badge.fury.io/rb/fog-local.svg)
-[![Build Status](https://travis-ci.org/fog/fog-local.svg?branch=master)](https://travis-ci.org/fog/fog-local)
-[![Dependency Status](https://gemnasium.com/fog/fog-local.svg)](https://gemnasium.com/fog/fog-local)
+[![Build Status](https://github.com/fog/fog-local/actions/workflows/ci.yml/badge.svg)](https://github.com/fog/fog-local/actions/workflows/ci.yml)
 
 ## Installation
 
